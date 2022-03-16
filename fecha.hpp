@@ -92,6 +92,16 @@ class Fecha {
 			_anio = fecha.get_anio();
 			_dia_semana = fecha.get_dia_semana();
 		};
+		
+		//Sobrecarga del operador =
+		Fecha & operator=(const Fecha &fecha){
+			_dia = fecha.get_dia();
+			_mes = fecha.get_mes();
+			_anio = fecha.get_anio();
+			_dia_semana = fecha.get_dia_semana();
+			
+			return *this;
+		}
 };
 
 #endif
