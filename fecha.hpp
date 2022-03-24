@@ -74,12 +74,6 @@ class Fecha {
 		
 		//Establece una fecha determinada
 		inline void set_fecha(int dia, int mes, int anio) {
-		
-			//Convertimos la fecha pasada por parámetro a una estructura std::tm
-			std::tm fecha = {0, 0, 0, dia, mes - 1, anio - 1900};
-			std::time_t fecha_t = std::mktime(&fecha);
-			const std::tm *fecha_tm = std::localtime(&fecha_t);
-		
 			_dia = dia;
 			_mes = mes;
 			_anio = anio;

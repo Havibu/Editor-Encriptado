@@ -1,3 +1,5 @@
 *.o
 *.gch
 tests/
+loot
+testing.enc

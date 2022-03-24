@@ -21,7 +21,7 @@ class Entrada {
 		//Establece la fecha asociada a la entada
 		inline void set_fecha(const Fecha &nueva_fecha) {_fecha = nueva_fecha;};
 		
-		//Establece el contenido desencriptado de la entrada
+		//Establece el contenido desencriptado de la entrad
 		inline void set_contenido(const string &nuevo_contenido) {_contenido = nuevo_contenido;};
 };
 
