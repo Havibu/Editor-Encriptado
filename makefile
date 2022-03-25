@@ -3,8 +3,9 @@
 CC=g++
 CFLAGS=-c -g -Wall -std=c++11 -lssl -lcrypto
 
-OBJECTS=fecha.o contenido_encriptado.o aes.o
+OBJECTS=fecha.o contenido_encriptado.o aes.o contenido_desencriptado.o
 CE_DEP=contenido_encriptado.cpp contenido_encriptado.hpp fecha.hpp entrada.hpp aes.hpp
+CD_DEP=contenido_desencriptado.cpp contenido_desencriptado.hpp fecha.hpp entrada.hpp aes.hpp
 
 all: $(OBJECTS)
 	$(CC) $(CFLAGS) entrada.hpp
@@ -17,6 +18,9 @@ aes.o: aes.cpp aes.hpp
 	
 contenido_encriptado.o: $(CE_DEP)
 	$(CC) $(CFLAGS) $^
-	
+
+contenido_desencriptado.o: $(CD_DEP)
+	$(CC) $(CFLAGS) $^
+
 clean:
 	rm -rf *.o *.hpp.gch

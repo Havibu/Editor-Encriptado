@@ -70,6 +70,5 @@ typedef unsigned char byte;
 typedef std::basic_string<char, std::char_traits<char>, zallocator<char> > secure_string;
 using EVP_CIPHER_CTX_free_ptr = std::unique_ptr<EVP_CIPHER_CTX, decltype(&::EVP_CIPHER_CTX_free)>;
 
-void gen_params(byte key[KEY_SIZE], byte iv[BLOCK_SIZE]);
 void aes_encrypt(const byte key[KEY_SIZE], const byte iv[BLOCK_SIZE], const secure_string& ptext, secure_string& ctext);
 void aes_decrypt(const byte key[KEY_SIZE], const byte iv[BLOCK_SIZE], const secure_string& ctext, secure_string& rtext);

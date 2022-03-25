@@ -15,9 +15,6 @@ _fichero(fichero) {
 	//Extraemos el contenido encriptado
 	_contenido = this->extraer_bytes(64);
 	
-	//Almacenamos la longitud del contenido encriptado
-	_contenido_length = this->get_length_contenido();
-	
 	//Inicializamos la clave (mas que nada para el destructor de la clase)
 	_clave = nullptr;
 }
@@ -37,7 +34,7 @@ void ContenidoEncriptado::set_clave(const string clave) {
 	
 	// Generamos una clave a partir de la clave pasada por parámetro y el relleno
 	// de forma que vaya alternando entre la clave y el relleno.
-	for(long unsigned int i = 0, j = 0; j < clave.length(); i++) {
+	for(long unsigned int i = 0, j = 0; j < clave.length() && i < 32; i++) {
 	
 		if(i % 2 == 0)
 			clave_32[i] = clave[j];
@@ -56,7 +53,13 @@ void ContenidoEncriptado::set_clave(const string clave) {
 		_clave[i] = clave_32[i];
 }
 
-uint8_t * ContenidoEncriptado::extraer_bytes(const int inicio, int nbytes) const {
+void ContenidoEncriptado::set_clave(const unsigned char *clave) {
+	
+	for(int i = 0; i < 32; i++)
+		_clave[i] = clave[i];
+}
+
+uint8_t * ContenidoEncriptado::extraer_bytes(const int inicio, int nbytes) {
 
 	fstream contenedor(_fichero, ios_base::in);
 	std::streambuf * contenedor_buffer;
@@ -69,9 +72,10 @@ uint8_t * ContenidoEncriptado::extraer_bytes(const int inicio, int nbytes) const
 		//Extraemos el buffer del fichero para leer del mismo
 		contenedor_buffer = contenedor.rdbuf();
 		
-		// Si el usuario especifica el número de bytes a extraer, esta variable tomará ese valor
-		// pero si el usuario no especifica ningún valor específico esta valdrá tanto como bytes
-		// haya en el fichero desde la posición indicada hasta el final del fichero
+		// Si el usuario especifica el número de bytes a extraer, esta variable 
+		// tomará ese valor pero si el usuario no especifica ningún valor
+		// específico esta valdrá tanto como bytes haya en el fichero desde la 
+		// posición indicada hasta el final del fichero
 		contenedor_nbytes = (nbytes != -1) ? (std::streamsize) nbytes : (std::streamsize) contenedor_buffer->pubseekoff(inicio, contenedor.end);
 		
 		// Reservamos dinámicamente la cantidad de memoria que vamos a necesitar para
@@ -81,8 +85,13 @@ uint8_t * ContenidoEncriptado::extraer_bytes(const int inicio, int nbytes) const
 		//Retrocedemos a la posición indicada por el usuario
 		contenedor_buffer->pubseekoff(inicio, contenedor.beg);
 		
-		//Extraemos la cantidad de información solicitada y la almacenamos en "contenido"
-		contenedor_buffer->sgetn( (char *) contenido, contenedor_nbytes);
+		// Extraemos la cantidad de información solicitada y la almacenamos
+		// en "contenido". La razón de que almacenemos el número de caracteres
+		// copiados cada vez que se llame a esta función es con visión de que la última
+		// vez que se llamará a esta función será para extraer el contenido encriptado
+		// del fichero. Es por eso que se almacena en la variable miembro asociada a
+		// la longitud de dicho contenido.
+		_contenido_length = contenedor_buffer->sgetn( (char *) contenido, contenedor_nbytes);
 		
 		//Cerramos el fichero
 		contenedor.close();

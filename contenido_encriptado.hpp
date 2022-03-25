@@ -35,20 +35,8 @@ class ContenidoEncriptado {
 		//Devuelve el contenido encriptado
 		inline uint8_t * get_contenido() const {return _contenido;};
 		
-		// Devuelve la longitud en bytes del contenido encriptado dentro del fichero
-		// que lo almacena
-		inline size_t get_length_contenido() {
-		
-			std::streamsize tamanio = 0;
-			
-			fstream contenedor(_fichero, ios_base::in);
-			std::streambuf * contenido = contenedor.rdbuf();
-						
-			// Obtenemos la longitud en bytes del contenido
-			tamanio = (std::streamsize) contenido->pubseekoff(64, contenedor.end);
-			
-			return (size_t) tamanio;
-		}
+		// Devuelve la longitud del contenido almacenado
+		inline size_t get_longitud() const {return _contenido_length;};
 		
 		//Establece el hash de la clave de encriptado
 		inline void set_hash(const uint8_t * nueva_clave) {_hash = (uint8_t *)nueva_clave;};
@@ -57,15 +45,17 @@ class ContenidoEncriptado {
 		inline void set_nuclear(const uint8_t * nueva_nuclear) {_hash_nuclear = (uint8_t *) nueva_nuclear;};
 		
 		//Establece el contenido encriptado
-		inline void set_contenido(const uint8_t * nuevo_contenido) {_contenido = (uint8_t *) nuevo_contenido;};
-		
+		inline void set_contenido(const uint8_t * nuevo_contenido) {_contenido = (uint8_t *)nuevo_contenido;};
+				
 		//Establece la clave de encriptado
 		void set_clave(const string);
+
+		void set_clave (const unsigned char *);
 		
 		// Extrae una serie de bytes del fichero que contiene tanto los hashes como
 		// el contenido encriptado. El puntero devuelto es un puntero creado dinámicamente
 		// por lo que deberá liberarse mediante delete [] una vez termine de usarse.
-		uint8_t * extraer_bytes(const int inicio = 0, int n_bytes = -1) const;
+		uint8_t * extraer_bytes(const int inicio = 0, int n_bytes = -1);
 		
 		// Encripta la lista de entradas pasadas por parámetro y almacena el
 		// resultado en _contenido
