@@ -12,6 +12,10 @@ class Entrada {
 		string _contenido; //Contenido desencriptado de la entrada
 		
 	public:
+		//Constructores de la clase Entrada
+		inline Entrada() {};
+		inline Entrada(Fecha fecha, string contenido = ""): _fecha(fecha), _contenido(contenido){};
+	
 		//Devuelve la fecha asociada a la entrada
 		inline Fecha get_fecha() const {return _fecha;};
 		

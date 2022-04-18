@@ -5,12 +5,15 @@
 #include <string>
 #include <list>
 #include <fstream>
+#include <iostream>
 #include "entrada.hpp"
 
 using std::string;
 using std::fstream;
 using std::ios_base;
 using std::list;
+using std::cerr;
+using std::endl;
 
 class ContenidoEncriptado {
 
@@ -39,10 +42,16 @@ class ContenidoEncriptado {
 		inline size_t get_longitud() const {return _contenido_length;};
 		
 		//Establece el hash de la clave de encriptado
-		inline void set_hash(const uint8_t * nueva_clave) {_hash = (uint8_t *)nueva_clave;};
+		inline void set_hash(const uint8_t * nueva_clave) {
+			for(int i = 0; i < 32; i++)
+				_hash[i] = nueva_clave[i];
+		};
 		
 		//Establece el hash de la clave nuclear
-		inline void set_nuclear(const uint8_t * nueva_nuclear) {_hash_nuclear = (uint8_t *) nueva_nuclear;};
+		inline void set_nuclear(const uint8_t * nueva_nuclear) {
+			for(int i = 0; i < 32; i++)
+				_hash_nuclear[i] = nueva_nuclear[i];
+		};
 		
 		//Establece el contenido encriptado
 		inline void set_contenido(const uint8_t * nuevo_contenido) {_contenido = (uint8_t *)nuevo_contenido;};
@@ -61,6 +70,8 @@ class ContenidoEncriptado {
 		// resultado en _contenido
 		bool encriptar_entradas(const list<Entrada> & entradas);
 		
+		// Volcamos los hashes, y el contenido encriptado en el fichero indicado
+		// por _fichero en almacenamiento persistente
 		bool volcar_contenido() const;
 		
 		//Destructor de la clase

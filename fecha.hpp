@@ -18,6 +18,7 @@ class Fecha {
 		
 	public:
 		Fecha(int dia = -1, int mes = -1, int anio = -1, string dia_s = "MISSING DATA");
+		Fecha(string dia, string mes, string anio): Fecha(stoi(dia), stoi(mes), stoi(anio)) {};
 			
 		//Devuelve el día del mes
 		inline int get_dia() const { return _dia;};
@@ -86,6 +87,31 @@ class Fecha {
 			_anio = fecha.get_anio();
 			_dia_semana = fecha.get_dia_semana();
 		};
+		
+		// Formato fecha: <día semana>, dd/mm/aaaa
+		inline void set_fecha(string fecha){
+			size_t pos = 0;
+			string dia, mes, anio;
+			
+			while(fecha[pos] != ' ')
+				pos++;
+			
+			// Extraemos el día
+			dia.push_back(fecha[pos+1]);
+			dia.push_back(fecha[pos+2]);
+			
+			//Extraemos el mes
+			mes.push_back(fecha[pos+4]);
+			mes.push_back(fecha[pos+5]);
+			
+			//Extraemos el año
+			anio.push_back(fecha[pos+7]);
+			anio.push_back(fecha[pos+8]);
+			anio.push_back(fecha[pos+9]);
+			anio.push_back(fecha[pos+10]);
+			
+			set_fecha(stoi(dia), stoi(mes), stoi(anio));
+		}
 		
 		//Sobrecarga del operador =
 		Fecha & operator=(const Fecha &fecha){

@@ -10,6 +10,8 @@ import sys
 from PyQt5.QtWidgets import (QWidget, QDesktopWidget, 
                              QApplication, QLabel, QLineEdit,
                              QTextEdit, QGridLayout)
+import hashlib
+
 from PyQt5.Qt import *
 
 class Clave(QWidget):
@@ -25,14 +27,14 @@ class Clave(QWidget):
         self.centrar()
         
         titulo = QLabel('Introduzca la contraseña')
-        clave = QLineEdit()
+        self.clave = QLineEdit()
         
         #Establecemos el layout
         grid = QGridLayout()
         grid.setSpacing(5)
         
         grid.addWidget(titulo, 0, 0, 1, 1, alignment=Qt.AlignHCenter)
-        grid.addWidget(clave, 1, 0, 1, 1)
+        grid.addWidget(self.clave, 1, 0, 1, 1)
         grid.addWidget(QLabel(' '), 2, 0, 3, 1)
         
         self.setLayout(grid)
@@ -44,6 +46,23 @@ class Clave(QWidget):
         pantalla = QDesktopWidget().availableGeometry().center()
         ventana.moveCenter(pantalla)
         self.move(ventana.topLeft())
+        
+    def keyPressEvent(self, e):
+        if e.key() == Qt.Key_Return:
+            self.get_hash()
+            self.close()
+        
+    def get_hash(self):
+        hash256 = hashlib.sha256(self.clave.text().encode()).hexdigest()
+                
+        if hash256 == sys.argv[1]:
+            print(self.clave.text())
+            
+        elif hash256 == sys.argv[2]:
+            print('nuclear')
+            
+        else:
+            print('ERROR')
         
 def main():
         

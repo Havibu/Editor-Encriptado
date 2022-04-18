@@ -1,0 +1,3 @@
+cd <directorio de ficheros del documento ODT>
+zip -0 -X <path + nombre del nuevo documento>.odt mimetype
+zip -r <path + nombre del nuevo documento>.odt * -x <path + nombre del nuevo documento>.odt mimetype

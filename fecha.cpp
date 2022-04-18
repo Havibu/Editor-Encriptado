@@ -61,3 +61,28 @@ _dia(dia), _mes(mes), _anio(anio), _dia_semana(dia_s) {
 	// semana, se establecerá el día de la semana a partir del resto de datos de la fecha
 	else if(anio != -1 && dia_s == "MISSING DATA") set_dia_semana();
 };
+
+/*Fecha::Fecha(string dia, string mes, string anio){
+	int dia_i = stoi(dia);
+	int mes_i = stoi(mes);
+	int anio_i = stoi(anio);
+	
+	Fecha(dia_i, mes_i, anio_i);
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

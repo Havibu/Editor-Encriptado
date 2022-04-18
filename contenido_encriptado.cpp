@@ -42,7 +42,6 @@ void ContenidoEncriptado::set_clave(const string clave) {
 			clave_32[i] = relleno[j];
 			j++;
 		}
-	
 	}
 	
 	// Reservamos memoria para la almacenar la clave generada
@@ -96,7 +95,10 @@ uint8_t * ContenidoEncriptado::extraer_bytes(const int inicio, int nbytes) {
 		//Cerramos el fichero
 		contenedor.close();
 	}
-	else contenido = nullptr;
+	else{
+		cerr << "ERROR::CONTENIDO_ENCRIPTADO::EXTRAER_BYTES" << endl;
+		contenido = nullptr;
+	}
 	
 	return contenido;
 }
@@ -150,22 +152,23 @@ bool ContenidoEncriptado::encriptar_entradas(const list<Entrada> & entradas) {
 		contenido_a_encriptar = contenido_ss.str();
 		contenido_secure = (const char *) contenido_a_encriptar.c_str();
 		
-		//Encriptamos el contenido
+		// Encriptamos el contenido
 		aes_encrypt(clave, iv, contenido_secure, contenido_cifrado);
 		
-		//Reservamos la memoria necesaria
+		// Reservamos la memoria necesaria
 		this->_contenido = new uint8_t[contenido_cifrado.length()];
 		
-		//Almacenamos el contenido cifrado en _contenido
+		// Almacenamos el contenido cifrado en _contenido
 		for(long unsigned int i = 0; i < contenido_cifrado.length(); i++)
 			this->_contenido[i] = contenido_cifrado[i];
 			
-		//Actualizamos la longitud del contenido
+		// Actualizamos la longitud del contenido
 		_contenido_length = contenido_cifrado.length();
 	}
 	
 	// En caso de que ocurra algún error
 	catch(...){
+		cerr << "ERROR::CONTENIDO_ENCRIPTADO::ENCRIPTAR_ENTRADAS" << endl;
 		return false;
 	}
 	
@@ -193,6 +196,7 @@ bool ContenidoEncriptado::volcar_contenido() const {
 	}
 	
 	catch(...){
+		cerr << "ERROR::CONTENIDO_ENCRIPTADO::VOLCAR_CONTENIDO" << endl;
 		return false;
 	}
 	
